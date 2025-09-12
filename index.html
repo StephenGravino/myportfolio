@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Stephen Gravino</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+   <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Add scroll behavior
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.nav-scroll');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+<!-- Navbar -->
+   <nav class="max-w-6xl mx-auto px-6 flex justify-between items-center h-16">
+    <h1 class="text-2xl font-bold gradient-text">MyPortfolio</h1>
+    <ul class="hidden md:flex space-x-6 items-center">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="projects.html" class="nav-link">Projects</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li>
+            <a href="assets/docs/resume.pdf" target="_blank" 
+               class="resume-btn bg-blue-600 text-white px-4 py-2 rounded-l-lg hover:bg-blue-700">
+                Resume
+            </a>
+        </li>
+        <li>
+            <a href="assets/docs/cv.pdf" target="_blank" 
+               class="resume-btn bg-blue-700 text-white px-4 py-2 rounded-r-lg hover:bg-blue-800 border-l border-blue-500">
+                CV
+            </a>
+        </li>
+    </ul>
+    <button class="md:hidden text-gray-700" onclick="toggleMenu()">☰</button>
+</nav>
+  <!-- Hero Section -->
+  <section class="text-center py-20">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Hi, I'm Stephen Gravino</h1>
+    <p class="text-lg text-gray-600 mb-8">Welcome to my portfolio website</p>
+    <p class="text-gray-500">Use the navigation above to explore my work and resume.</p>
+  </section>
+
+ <!-- Footer -->
+    <footer class="bg-gradient-to-r from-blue-900 to-gray-800 text-white text-center py-6 fixed bottom-0 w-full">
+        <p class="hover-float">&copy; 2025 Stephen Gravino. All rights reserved.</p>
+    </footer>
+</body>
+</html>
