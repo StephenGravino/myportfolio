@@ -1,279 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects & Certificates | Stephen Gravino</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-     <script>
-        function toggleMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Stephen Gravino</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            fadeIn: 'fadeIn 1s ease-in-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .gradient-text {
+      background: linear-gradient(to right, #3b82f6, #9333ea);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+    }
+
+    /* Modal animations */
+    #modal {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    #modal .bg-white {
+      animation: slideInUp 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    window.addEventListener('scroll', function () {
+      const nav = document.querySelector('.nav-scroll');
+      if (window.scrollY > 50) {
+        nav.classList.add('shadow-lg', 'bg-white/80', 'backdrop-blur-md');
+      } else {
+        nav.classList.remove('shadow-lg', 'bg-white/80', 'backdrop-blur-md');
+      }
+    });
+
+    // Page transition
+    document.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('./') || href.startsWith('../') || href.includes('.html') || href === 'index.html' || href === 'about.html' || href === 'projects.html' || href === 'contact.html') {
+          e.preventDefault();
+          document.body.classList.add('fade-out');
+          setTimeout(() => {
+            window.location.href = href;
+          }, 300);
         }
+      });
+    });
 
-        // Add scroll behavior
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('.nav-scroll');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-    </script>
+    // Modal functionality
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const closeModal = document.getElementById('close-modal');
+
+    function openModal(title, content) {
+      modalTitle.textContent = title;
+      modalContent.innerHTML = content;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModalFunc() {
+      modal.classList.add('hidden');
+    }
+
+    closeModal.addEventListener('click', closeModalFunc);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModalFunc();
+    });
+
+    // Project click handlers
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.querySelector('h3').textContent;
+        const desc = card.querySelector('p').textContent;
+        const tech = card.querySelector('.flex').innerHTML;
+        const img = card.querySelector('img').src;
+        const content = `
+          <img src="${img}" alt="${title}" class="w-full h-48 object-cover rounded-lg mb-4">
+          <p class="text-gray-600 mb-4">${desc}</p>
+          <h4 class="font-semibold mb-2">Technologies Used:</h4>
+          <div class="flex flex-wrap gap-2">${tech}</div>
+        `;
+        openModal(title, content);
+      });
+    });
+
+    // Certificate click handlers
+    document.querySelectorAll('.certificate-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img').src;
+        const title = card.querySelector('h4').textContent;
+        const content = `<img src="${img}" alt="${title}" class="w-full max-h-96 object-contain">`;
+        openModal(title, content);
+      });
+    });
+</script>
 </head>
-<body class="bg-gray-50 text-gray-900">
-    <!-- Navbar -->
-   <nav class="max-w-6xl mx-auto px-6 flex justify-between items-center h-16">
-    <h1 class="text-2xl font-bold gradient-text">MyPortfolio</h1>
-    <ul class="hidden md:flex space-x-6 items-center">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="about.html" class="nav-link">About</a></li>
-        <li><a href="projects.html" class="nav-link">Projects</a></li>
-        <li><a href="contact.html" class="nav-link">Contact</a></li>
+<body class="bg-gray-50 text-gray-900 font-sans animate-slideInUp min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="nav-scroll fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-16">
+      <h1 class="text-2xl font-bold gradient-text">Stephen Gravino</h1>
+      <ul class="hidden md:flex space-x-6 items-center font-semibold text-gray-800">
+        <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
+        <li><a href="about.html" class="hover:text-blue-600 transition">About</a></li>
+        <li><a href="projects.html" class="text-blue-600 font-bold">Projects</a></li>
+        <li><a href="contact.html" class="hover:text-blue-600 transition">Contact</a></li>
         <li>
-            <a href="assets/docs/resume.pdf" target="_blank" 
-               class="resume-btn bg-blue-600 text-white px-4 py-2 rounded-l-lg hover:bg-blue-700">
-                Resume
-            </a>
+          <a href="assets/docs/resume.pdf" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-l-lg hover:bg-blue-700 transition">Resume</a>
         </li>
         <li>
-            <a href="assets/docs/cv.pdf" target="_blank" 
-               class="resume-btn bg-blue-700 text-white px-4 py-2 rounded-r-lg hover:bg-blue-800 border-l border-blue-500">
-                CV
-            </a>
+          <a href="assets/docs/cv.pdf" target="_blank" class="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition">CV</a>
         </li>
+      </ul>
+      <button class="md:hidden text-gray-700 text-2xl" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md mt-16">
+    <ul class="flex flex-col space-y-4 p-4 font-semibold text-gray-800">
+      <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
+      <li><a href="about.html" class="hover:text-blue-600 transition">About</a></li>
+      <li><a href="projects.html" class="text-blue-600 font-bold">Projects</a></li>
+      <li><a href="contact.html" class="hover:text-blue-600 transition">Contact</a></li>
+      <li>
+        <a href="assets/docs/resume.pdf" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Resume</a>
+      </li>
     </ul>
-    <button class="md:hidden text-gray-700" onclick="toggleMenu()">☰</button>
-</nav>
+  </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
-            <ul class="flex flex-col space-y-4 p-4">
-                <li><a href="index.html" class="hover:text-blue-600">Home</a></li>
-                <li><a href="about.html" class="hover:text-blue-600">About</a></li>
-                <li><a href="projects.html" class="hover:text-blue-600">Projects</a></li>
-                <li><a href="contact.html" class="hover:text-blue-600">Contact</a></li>
-            </ul>
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto py-32 px-6">
+    <!-- Projects Section -->
+    <section class="mb-16">
+      <h2 class="text-4xl font-bold mb-6 gradient-text">Recent Projects</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Alerto360 -->
+        <div class="project-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/alerto360.jpg" alt="Alerto360" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Alerto360</h3>
+            <p class="text-gray-600 mb-4">Emergency response system with real-time tracking and alerts.</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">PHP</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">MySQL</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">JavaScript</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Bootstrap</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Python</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Flutter</span>
+            </div>
+          </div>
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto py-24 px-6">
-        <!-- Projects Section -->
-        <section class="mb-16">
-            <h2 class="text-4xl font-bold mb-8">Recent Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Alerto360 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="assets/alerto360.jpg" alt="Alerto360" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Alerto360</h3>
-                        <p class="text-gray-600 mb-4">Emergency response system with real-time tracking and alerts.</p>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">PHP</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">MySQL</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">JavaScript</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Bootstrap</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Python</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Flutter</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payroll Management System -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="assets/payroll.jpg" alt="Payroll System" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Payroll Management System</h3>
-                        <p class="text-gray-600 mb-4">Automated payroll processing and employee management system.</p>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">PHP</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">MySQL</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Bootstrap</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SmartScan -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="assets/smartscan.jpg" alt="SmartScan" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">SmartScan</h3>
-                        <p class="text-gray-600 mb-4">Inventory processing system.</p>
-                        <div class="flex gap-2 flex-wrap">
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Android Studio</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Kotlin</span>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Java</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Payroll Management System -->
+        <div class="project-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/payroll.jpg" alt="Payroll System" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Payroll Management System</h3>
+            <p class="text-gray-600 mb-4">Automated payroll processing and employee management system.</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">PHP</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">MySQL</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Bootstrap</span>
             </div>
-        </section>
+          </div>
+        </div>
 
-       <!-- TESDA Certificates -->
-<div class="mb-12">
-    <h3 class="text-2xl font-semibold mb-6">TESDA Certifications</h3>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- SmartScan -->
+        <div class="project-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/smartscan.jpg" alt="SmartScan" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">SmartScan</h3>
+            <p class="text-gray-600 mb-4">Inventory processing system.</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Android Studio</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Kotlin</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Java</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESDA Certificates -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6">TESDA Certifications</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- CSS Certificate 1 -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/css1.jpg" 
-                 alt="CSS Certificate 1" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Computer Systems Servicing NC II</h4>
-                <p class="text-gray-600">TESDA</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/css1.jpg"
+                  alt="CSS Certificate 1"
+                  class="w-full h-48 object-contain">
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Computer Systems Servicing NC II</h4>
+            <p class="text-gray-600">TESDA</p>
+          </div>
         </div>
 
         <!-- CSS Certificate 2 -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/css2.jpg" 
-                 alt="CSS Certificate 2" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
-                <p class="text-gray-600">TESDA</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/css2.jpg"
+                  alt="CSS Certificate 2"
+                  class="w-full h-48 object-contain">
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
+            <p class="text-gray-600">TESDA</p>
+          </div>
         </div>
 
         <!-- CSS Certificate 3 -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/css3.jpg" 
-                 alt="CSS Certificate 3" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
-                <p class="text-gray-600">TESDA</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/certificates/css3.jpg"
+               alt="CSS Certificate 3"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
+            <p class="text-gray-600">TESDA</p>
+          </div>
         </div>
 
         <!-- CSS Certificate 4 -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/css4.jpg" 
-                 alt="CSS Certificate 4" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
-                <p class="text-gray-600">TESDA</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/certificates/css4.jpg"
+               alt="CSS Certificate 4"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
+            <p class="text-gray-600">TESDA</p>
+          </div>
         </div>
 
         <!-- CSS Certificate 5 -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/css5.jpg" 
-                 alt="CSS Certificate 5" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
-                <p class="text-gray-600">TESDA</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/certificates/css5.jpg"
+               alt="CSS Certificate 5"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Computer Systems Servicing NC II </h4>
+            <p class="text-gray-600">TESDA</p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-            <!-- freeCodeCamp Certificate -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6">freeCodeCamp Certification</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img src="assets/certificates/freecodecamp.jpg" 
-                             alt="freeCodeCamp Certificate" 
-                             class="w-full h-48 object-contain cursor-pointer"
-                             onclick="window.open(this.src)">
-                        <div class="p-4">
-                            <h4 class="font-bold mb-2">Responsive Web Design</h4>
-                            <p class="text-gray-600">freeCodeCamp</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-<!-- CourseBank Certificates -->
-<div class="mb-12">
-    <h3 class="text-2xl font-semibold mb-6">CourseBank Certifications</h3>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/coursebank1.jpg" 
-                 alt="Web Development Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Navigating Google Workspace</h4>
-                <p class="text-gray-600">CourseBank</p>
-            </div>
-        </div>
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/coursebank2.jpg" 
-                 alt="JavaScript Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Designing Presentation Slides </h4>
-                <p class="text-gray-600">CourseBank</p>
-            </div>
+    <!-- freeCodeCamp Certificate -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6">freeCodeCamp Certification</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img src="assets/certificates/freecodecamp.jpg"
+               alt="freeCodeCamp Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Responsive Web Design</h4>
+            <p class="text-gray-600">freeCodeCamp</p>
+          </div>
         </div>
-
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/coursebank3.jpg" 
-                 alt="Database Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Microsoft Productiviy Tools</h4>
-                <p class="text-gray-600">CourseBank</p>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
 
-<!-- Cisco Certificates -->
-<div class="mb-12">
-    <h3 class="text-2xl font-semibold mb-6">Cisco Networking Academy</h3>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/cisco1.jpg" 
-                 alt="CCNA Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Introduction to Cybersecurity</h4>
-                <p class="text-gray-600">Cisco Networking Academy</p>
-            </div>
+    <!-- CourseBank Certificates -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6">CourseBank Certifications</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/coursebank1.jpg"
+               alt="Web Development Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Navigating Google Workspace</h4>
+            <p class="text-gray-600">CourseBank</p>
+          </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/cisco2.jpg" 
-                 alt="CCNA Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Cyber Threat Management</h4>
-                <p class="text-gray-600">Cisco Networking Academy</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/coursebank2.jpg"
+               alt="JavaScript Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Designing Presentation Slides </h4>
+            <p class="text-gray-600">CourseBank</p>
+          </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="assets/certificates/cisco3.jpg" 
-                 alt="CCNA Certificate" 
-                 class="w-full h-48 object-contain cursor-pointer"
-                 onclick="window.open(this.src)">
-            <div class="p-4">
-                <h4 class="font-bold mb-2">Network Defense</h4>
-                <p class="text-gray-600">Cisco Networking Academy</p>
-            </div>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/coursebank3.jpg"
+               alt="Database Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Microsoft Productiviy Tools</h4>
+            <p class="text-gray-600">CourseBank</p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-    </main>
+    <!-- Cisco Certificates -->
+    <div class="mb-12">
+      <h3 class="text-2xl font-semibold mb-6">Cisco Networking Academy</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/cisco1.jpg"
+               alt="CCNA Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Introduction to Cybersecurity</h4>
+            <p class="text-gray-600">Cisco Networking Academy</p>
+          </div>
+        </div>
 
-    <!-- Footer -->
-    <footer class="bg-gradient-to-r from-blue-900 to-gray-800 text-white text-center py-6 fixed bottom-0 w-full">
-        <p class="hover-float">&copy; 2025 Stephen Gravino. All rights reserved.</p>
-    </footer>
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/cisco2.jpg"
+               alt="CCNA Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Cyber Threat Management</h4>
+            <p class="text-gray-600">Cisco Networking Academy</p>
+          </div>
+        </div>
+
+        <div class="certificate-card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+            <img src="assets/certificates/cisco3.jpg"
+               alt="CCNA Certificate"
+               class="w-full h-48 object-contain cursor-pointer"
+               >
+          <div class="p-4">
+            <h4 class="font-bold mb-2">Network Defense</h4>
+            <p class="text-gray-600">Cisco Networking Academy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 id="modal-title" class="text-2xl font-bold gradient-text"></h2>
+          <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        </div>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-blue-900 to-gray-800 text-white py-6 text-center mt-auto">
+    <div class="flex justify-center space-x-6 mb-2 text-xl">
+      <a href="https://github.com/akolangto69" target="_blank" class="hover:text-blue-400 transition">🐙</a>
+      <a href="mailto:stephencurrygravino09@gmail.com" class="hover:text-blue-400 transition">✉️</a>
+      <a href="tel:+639123456789" class="hover:text-blue-400 transition">📞</a>
+    </div>
+    <p class="text-sm">&copy; 2025 Stephen Gravino. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>
